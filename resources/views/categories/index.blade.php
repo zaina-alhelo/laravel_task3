@@ -22,16 +22,20 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">category Name</th>
+            <th scope="col">category Image</th>
 
             <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($categories as $category)
-
+    
             <tr>
                 <th scope="row">{{$loop->iteration}}</th>
                 <td>{{$category->category_name}}</td>
+                <td>
+                <img src="{{asset($category->image)}}" style="height: 70px; width:70px" alt="image">
+                </td>
   
 
 

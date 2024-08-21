@@ -2,7 +2,7 @@
 @section('title', 'edit')
 
 @section('container')
-<form action="{{route('products.update', $product->id)}}" method="POST">
+<form action="{{route('products.update', $product->id)}}" method="POST"  enctype="multipart/form-data">
 
     @csrf
 @method('PUT')  
@@ -18,6 +18,10 @@
         <label for="exampleFormControlInput1" class="form-label">Product Price</label>
         <input type="text" class="form-control" id="exampleFormControlInput1" name="price" value="{{$product->product_price}}">
     </div>
+    <div class="mb-3">
+    <label for="exampleFormControlInput2" class="form-label">Upload Image :</label>
+    <input type="file" class="form-control" id="exampleFormControlInput2" name="image">
+</div>
 <button type="submit" class="btn btn-success mt-3">Update</button>
 
 </form>

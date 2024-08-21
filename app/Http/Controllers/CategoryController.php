@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -30,9 +31,17 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->has('image')){
+            $file= $request->file('image');
+            $extension=$file->getClientOriginalExtension();
+            $filename=time().'.'.$extension;
+            $path='uploads/category/';
+            $file->move($path,$filename);
+        }
           category::create([
             'category_name'=>$request->name,
             'category_description'=>$request->description,
+            'image'=>$path.$filename,
         
         ]);
 return to_route('categories.index');
@@ -43,6 +52,7 @@ return to_route('categories.index');
      */
     public function show(Category $category)
     {
+ 
         return view('categories.show', ['category'=> $category]);
     }
 
@@ -60,9 +70,21 @@ return to_route('categories.index');
      */
     public function update(Request $request, Category $category)
     {
+        if($request->has('image')){
+            $file= $request->file('image');
+            $extension=$file->getClientOriginalExtension();
+            $filename=time().'.'.$extension;
+            $path='uploads/category/';
+            $file->move($path,$filename);
+            if(File::exists($category->image)){
+                File::delete($category->image);
+            }
+        }
               $category ->update([
             'category_name'=> $request->name,
             'category_description'=> $request->description,
+                        'image'=>$path.$filename,
+
         ]);
         return redirect()->route('categories.index')->with('success', 'Movie updated successfully!');
     }
@@ -72,6 +94,9 @@ return to_route('categories.index');
      */
     public function destroy(Category $category)
     {
+          if(File::exists($category->image)){
+                File::delete($category->image);
+            }
              $category->delete();
         return to_route('categories.index');
     }
